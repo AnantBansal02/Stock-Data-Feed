@@ -1,7 +1,32 @@
 import upstox_client
-import json
+from upstox_client.api import HistoryV3Api
+from upstox_client import Configuration, ApiClient
+import urllib3
+from urllib3.util.retry import Retry
+import logging
 
-apiInstance = upstox_client.HistoryV3Api()
+logger = logging.getLogger(__name__)
+
+# 1. Create custom PoolManager
+custom_pool_manager = urllib3.PoolManager(
+    num_pools=100,
+    maxsize=20,
+    retries=Retry(
+        total=3,
+        backoff_factor=0.3,
+        status_forcelist=[429, 500, 502, 503, 504],
+    ),
+)
+
+# 2. Create config and ApiClient
+configuration = Configuration()
+api_client = ApiClient(configuration=configuration)
+
+# 3. Patch the internal pool manager safely
+api_client.rest_client.pool_manager = custom_pool_manager
+
+# 4. Instantiate the API with this patched client
+apiInstance = HistoryV3Api(api_client)
 
 # candles data response structure:
 # response ->response.status, response.data
