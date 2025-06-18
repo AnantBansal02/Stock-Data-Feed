@@ -18,6 +18,7 @@ dist/
 .eggs/
 
 # Logs and local data
+logs/
 *.log
 *.sqlite3
 

@@ -8,12 +8,10 @@ from app.utils.ingest_instruments import load_instruments
 from app.jobs.scheduler import start_scheduler, shutdown_scheduler
 from app.jobs.registry import register_all_jobs
 from app.db import Base, sync_engine, async_engine, get_sync_session, get_async_session
+from app.logging_config import setup_logging
 import os, logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(levelname)s:     %(message)s"
-)
+setup_logging()
 
 app = FastAPI(title="Stock Feed Service")
 
