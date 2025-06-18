@@ -71,7 +71,14 @@ class loadHistoricalFifteenMinutesCandles(BaseJob):
             logger.error(f"loadHistoricalFifteenMinutesCandles job failed: {e}")
 
     def schedule(self):
-        scheduler.add_job(self.run, 'cron', hour=12, minute=30, day_of_week='tue-sat', id='load_historical_15m_candles')
-
+        scheduler.add_job(
+            self.run, 
+            'cron', 
+            hour=12, 
+            minute=30, 
+            day_of_week='tue-sat', 
+            id='load_historical_15m_candles',
+            misfire_grace_time=120,
+        )
         # run it once on startup
         self.run()

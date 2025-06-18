@@ -59,9 +59,31 @@ class loadIntradayFifteenMinutesCandles(BaseJob):
             logger.error(f"loadIntradayFifteenMinutesCandles job failed: {e}")
 
     def schedule(self):
-        scheduler.add_job(self.run, 'cron', hour=3, minute=47, day_of_week='mon-fri', id='load_15m_candles_1')
-        scheduler.add_job(self.run, 'cron', hour='4-9', minute='2,17,32,47', day_of_week='mon-fri', id='load_15m_candles_2')
-        scheduler.add_job(self.run, 'cron', hour=10, minute=2, day_of_week='mon-fri', id='load_15m_candles_3')
-
+        scheduler.add_job(
+            self.run, 
+            'cron', 
+            hour=3, 
+            minute=47, 
+            day_of_week='mon-fri', 
+            id='load_15m_candles_1',
+            misfire_grace_time=120,
+        )
+        scheduler.add_job(
+            self.run, 
+            'cron', 
+            hour='4-9', 
+            minute='2,17,32,47', 
+            day_of_week='mon-fri', 
+            id='load_15m_candles_2',
+            misfire_grace_time=120,
+        )
+        scheduler.add_job(self.run, 
+            'cron', 
+            hour=10, 
+            minute=2, 
+            day_of_week='mon-fri', 
+            id='load_15m_candles_3',
+            misfire_grace_time=120,
+        )
         # run it once on startup
         self.run()

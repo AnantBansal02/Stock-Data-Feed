@@ -38,7 +38,7 @@ class loadInstrumentsTable(BaseJob):
             weeks=26,
             id='loadInstrumentsTable',
             replace_existing=True,
+            misfire_grace_time=120,
         )
-
         # run it once on startup
         self.run()
